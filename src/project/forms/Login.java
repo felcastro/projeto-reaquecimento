@@ -20,6 +20,8 @@ public class Login{
 	private UsersDb usersDb;
 	private JPasswordField txtPassword;
 	private JButton btnLogin;
+	private JLabel lblBoxNumber;
+	private JTextField txtBoxNumber;
 
 	/**
 	 * Create the application.
@@ -41,25 +43,34 @@ public class Login{
 		frmLogin.getContentPane().setLayout(null);
 		
 		JLabel lblUsername = new JLabel("Username:");
-		lblUsername.setBounds(50, 58, 80, 15);
+		lblUsername.setBounds(50, 42, 80, 15);
 		frmLogin.getContentPane().add(lblUsername);
 		
 		txtUsername = new JTextField();
-		txtUsername.setBounds(148, 56, 200, 19);
+		txtUsername.setBounds(149, 40, 200, 19);
 		frmLogin.getContentPane().add(txtUsername);
 		txtUsername.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("Password:");
-		lblNewLabel.setBounds(50, 104, 80, 15);
+		lblNewLabel.setBounds(50, 94, 80, 15);
 		frmLogin.getContentPane().add(lblNewLabel);
 		
 		btnLogin = new JButton("Login");
-		btnLogin.setBounds(231, 157, 117, 25);
+		btnLogin.setBounds(254, 168, 95, 25);
 		frmLogin.getContentPane().add(btnLogin);
 		
 		txtPassword = new JPasswordField();
-		txtPassword.setBounds(148, 104, 200, 15);
+		txtPassword.setBounds(149, 94, 200, 15);
 		frmLogin.getContentPane().add(txtPassword);
+		
+		lblBoxNumber = new JLabel("Box No:");
+		lblBoxNumber.setBounds(60, 173, 70, 15);
+		frmLogin.getContentPane().add(lblBoxNumber);
+		
+		txtBoxNumber = new JTextField();
+		txtBoxNumber.setBounds(149, 171, 70, 19);
+		frmLogin.getContentPane().add(txtBoxNumber);
+		txtBoxNumber.setColumns(10);
 		
 		btnLogin.addActionListener(new ActionListener(){
 		  public void actionPerformed(ActionEvent e)
@@ -79,14 +90,25 @@ public class Login{
 				  login();
 			  }
 		});
+		txtBoxNumber.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e)
+			  {
+				  login();
+			  }
+		});
 	}
 	
 	private void login(){
 		User user = new User(txtUsername.getText(), txtPassword.getText());
 		  if(usersDb.validateUser(user)){
-			  frmLogin.setVisible(false);
-			  HomeMenu menu = new HomeMenu();
-			  menu.frmHomeMenu.setVisible(true);
+			  if(!txtBoxNumber.getText().equals("")){
+				  frmLogin.setVisible(false);
+				  HomeMenu menu = new HomeMenu(Integer.parseInt(txtBoxNumber.getText()), user);
+				  menu.frmHomeMenu.setVisible(true);
+			  }
+			  else {
+				  JOptionPane.showMessageDialog(null, "Insira o numero do caixa.", "Erro", JOptionPane.WARNING_MESSAGE);
+			  }
 		  }
 		  else {
 			  JOptionPane.showMessageDialog(null, "Nome de usuario ou senha incorreto.", "Erro", JOptionPane.WARNING_MESSAGE);

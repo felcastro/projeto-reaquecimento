@@ -1,8 +1,11 @@
 package project.db;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 
 import project.models.Customer;
@@ -11,6 +14,8 @@ public class CustomersDb {
 
 public ArrayList<Customer> customers = new ArrayList<>();
 	
+	public final String file = "../projeto-reaquecimento/src/project/db/CustomersDb";
+
 	public CustomersDb() {
 		loadCustomers();
 	}
@@ -19,7 +24,6 @@ public ArrayList<Customer> customers = new ArrayList<>();
 		customers = new ArrayList<>();
 		BufferedReader br = null;
 		FileReader fr = null;
-		String file = "../projeto-reaquecimento/src/project/db/CustomersDb";
 		String[] lineContent;
 		try {
 			fr = new FileReader(file);
@@ -52,8 +56,16 @@ public ArrayList<Customer> customers = new ArrayList<>();
 		return customersToString;
 	}
 	
-	public void registerCustomer(){
-		
+	public boolean registerCustomer(Customer customer){
+		if(customers.stream().anyMatch(c -> c.cpf == customer.cpf)){
+			return false;
+		}
+		try {
+		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+		writer.write(customer.toStringDb());
+		writer.close();
+		return true;
+		} catch (IOException e) {return false;}
 	}
 	
 }

@@ -30,4 +30,10 @@ public class Customer {
 		str = firstName + " " + lastName + ", " + age + " anos." + " CPF: " + cpf;
 		return str;
 	}
+	
+	public String toStringDb(){
+		String str;
+		str = cpf + "," + age + "," + firstName + "," + lastName;
+		return str;
+	}
 }

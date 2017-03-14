@@ -29,22 +29,25 @@ public class LineDb {
 		lineCustomers.add(new Customer("12474512365", 69, "Marcelo", "Santana"));
 		lineCustomers.add(new Customer("12354523236", 49, "Pietra", "Alves"));
 	}
-
-	public Customer getNext() {
-		return lineCustomers.remove(0);	
-	}
-
-	public Customer getNextElder(){
-		Customer elder = lineCustomers.stream().filter(c -> c.age >= 60).findFirst().orElse(null);
-		if(elder != null){
-			lineCustomers.remove(elder);
-		}
-		return elder;
-	}
 	
-	public String getFullCustomers(){
+	public int getLineSize(){
+		return lineCustomers.size();
+	}
+
+	public Customer getNextCustomer(int boxNumber) {
+		Customer cust;
+		if (boxNumber < 6) {
+			cust = lineCustomers.stream().filter(c -> c.age >= 60).findFirst().orElse(lineCustomers.get(0));
+			lineCustomers.remove(cust);
+		} else {
+			cust = lineCustomers.remove(0);
+		}
+		return cust;
+	}
+
+	public String getFullCustomers() {
 		String customersToString = "";
-		for(Customer customer: lineCustomers){
+		for (Customer customer : lineCustomers) {
 			customersToString += customer.toString() + "\n";
 		}
 		return customersToString;
