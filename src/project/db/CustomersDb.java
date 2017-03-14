@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.util.ArrayList;
 
@@ -57,15 +58,19 @@ public ArrayList<Customer> customers = new ArrayList<>();
 	}
 	
 	public boolean registerCustomer(Customer customer){
-		if(customers.stream().anyMatch(c -> c.cpf == customer.cpf)){
+		if(customers.stream().anyMatch(c -> c.cpf.equals(customer.cpf))){
 			return false;
 		}
 		try {
-		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-		writer.write(customer.toStringDb());
-		writer.close();
+	    FileWriter fw = new FileWriter(file, true);
+	    BufferedWriter bw = new BufferedWriter(fw);
+	    PrintWriter out = new PrintWriter(bw);
+		out.println(customer.toStringDb());
+		out.close();
 		return true;
-		} catch (IOException e) {return false;}
+		} catch (IOException e) {
+			return false;
+		}
 	}
 	
 }
